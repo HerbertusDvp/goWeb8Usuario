@@ -1,8 +1,6 @@
 package ruta
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 	"text/template"
 
@@ -18,13 +16,6 @@ func Home(response http.ResponseWriter, request *http.Request) {
 	}
 }
 
-func Servicio1() {
-	http.HandleFunc("/", func(reponse http.ResponseWriter, request *http.Request) {
-		fmt.Fprintln(reponse, "Hola web con go con la ruta del servicio 1")
-	})
-	log.Fatal(http.ListenAndServe("localhost:8080", nil))
-}
-
 func Nosotros(response http.ResponseWriter, request *http.Request) {
 	template, err := template.ParseFiles("views/nosotros.html")
 
@@ -36,15 +27,45 @@ func Nosotros(response http.ResponseWriter, request *http.Request) {
 }
 
 func Parametros(response http.ResponseWriter, request *http.Request) {
-	vars := mux.Vars(request)
-	fmt.Fprintln(response, "Estas son las peticiones: \nid: "+vars["id"]+"\nnombre: "+vars["nombre"])
+	template, err := template.ParseFiles("views/parametros.html")
+	vars := mux.Vars(request) // Obtiene los paramatros de la url
+	data := map[string]string{
+		"id":     vars["id"],
+		"nombre": vars["nombre"],
+	}
+	if err != nil {
+		panic(err)
+	} else {
+		template.Execute(response, data)
+	}
 }
 
 func ParametrosQS(response http.ResponseWriter, request *http.Request) {
-	fmt.Fprintln(response, "-- Parametros ocn String Query -- ")
-	fmt.Fprintln(response, request.URL)
-	fmt.Fprintln(response, request.URL.RawQuery)
-	fmt.Fprintln(response, request.URL.Query())
-	fmt.Fprintln(response, request.URL.Query().Get("id"))
-	fmt.Fprintln(response, request.URL.Query().Get("nombre"))
+
+	template, err := template.ParseFiles("views/parametrosSQ.html")
+	id := request.URL.Query().Get("id")
+	nombre := request.URL.Query().Get("nombre")
+	data := map[string]string{
+		"id":     id,
+		"nombre": nombre,
+	}
+	if err != nil {
+		panic(err)
+	} else {
+		template.Execute(response, data)
+	}
+
+	/*
+		fmt.Fprintln(response, "-- Parametros ocn String Query -- ")
+		fmt.Fprintln(response, request.URL)
+		fmt.Fprintln(response, request.URL.RawQuery)
+		fmt.Fprintln(response, request.URL.Query())
+		fmt.Fprintln(response, request.URL.Query().Get("id"))
+		fmt.Fprintln(response, request.URL.Query().Get("nombre"))
+	*/
+}
+
+func Estructuras(response http.ResponseWriter, request *http.Request) {
+	template, _ := template.ParseFiles("views/estructuras.html")
+	template.Execute(response, nil)
 }

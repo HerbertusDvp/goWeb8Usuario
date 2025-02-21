@@ -17,6 +17,7 @@ func main() {
 	mux.HandleFunc("/nosotros", ruta.Nosotros)
 	mux.HandleFunc("/parametros/{id:.*}/{nombre:.*}", ruta.Parametros)
 	mux.HandleFunc("/parametrosQS", ruta.ParametrosQS)
+	mux.HandleFunc("/estructuras", ruta.Estructuras)
 
 	server := &http.Server{
 		Addr:         "localhost:8080",
