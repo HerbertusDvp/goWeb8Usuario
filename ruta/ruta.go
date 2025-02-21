@@ -4,12 +4,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"text/template"
 
 	"github.com/gorilla/mux"
 )
 
 func Home(response http.ResponseWriter, request *http.Request) {
-	fmt.Fprintln(response, "Hola desde la ruta home")
+	template, err := template.ParseFiles("views/home.html")
+	if err != nil {
+		panic(err)
+	} else {
+		template.Execute(response, nil)
+	}
 }
 
 func Servicio1() {
@@ -20,7 +26,13 @@ func Servicio1() {
 }
 
 func Nosotros(response http.ResponseWriter, request *http.Request) {
-	fmt.Fprintln(response, "Página con parametros")
+	template, err := template.ParseFiles("views/nosotros.html")
+
+	if err != nil {
+		panic(err)
+	} else {
+		template.Execute(response, nil)
+	}
 }
 
 func Parametros(response http.ResponseWriter, request *http.Request) {
