@@ -65,7 +65,29 @@ func ParametrosQS(response http.ResponseWriter, request *http.Request) {
 	*/
 }
 
+type Habilidad struct {
+	Nombre string
+}
+
+type Datos struct {
+	Nombre      string
+	Edad        int
+	Perfil      int
+	Habilidades []Habilidad
+}
+
 func Estructuras(response http.ResponseWriter, request *http.Request) {
-	template, _ := template.ParseFiles("views/estructuras.html")
-	template.Execute(response, nil)
+	template, err := template.ParseFiles("views/estructuras.html")
+	habilidades := []Habilidad{
+		{Nombre: "Ineligencia"},
+		{Nombre: "Videojuegos"},
+		{Nombre: "Programación"},
+		{Nombre: "Canto"},
+	}
+
+	if err != nil {
+		panic(err)
+	} else {
+		template.Execute(response, Datos{"Juan perez", 16, 1, habilidades})
+	}
 }
