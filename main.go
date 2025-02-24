@@ -23,6 +23,8 @@ func main() {
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
 	mux.PathPrefix("/web/static/").Handler(s)
 
+	mux.NotFoundHandler = mux.NewRoute().HandlerFunc(ruta.Pagina404).GetHandler()
+
 	server := &http.Server{
 		Addr:         "localhost:8080",
 		Handler:      mux,
