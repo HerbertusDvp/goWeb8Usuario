@@ -19,6 +19,10 @@ func main() {
 	mux.HandleFunc("/parametrosQS", ruta.ParametrosQS)
 	mux.HandleFunc("/estructuras", ruta.Estructuras)
 
+	//Para recursos estaicos
+	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
+	mux.PathPrefix("/web/static/").Handler(s)
+
 	server := &http.Server{
 		Addr:         "localhost:8080",
 		Handler:      mux,

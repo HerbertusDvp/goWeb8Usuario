@@ -1,0 +1,43 @@
+{{template "header"}}
+<main class="container">
+    Página de estructuras de control
+    <h3>Declaración de vairables</h3>
+    {{with $nombre := "Herbert el macho"}}
+    <p> Nombre:{{$nombre}} </p>
+    {{end}}
+    <hr/>
+
+    <h2>Datos respuesta de parte del servidor xx</h2>
+
+    <ul>
+        <li>Nombre: {{.Nombre}} </li>
+        <li>Edad: {{.Edad}} </li>
+        <li>Perfil: {{.Perfil}} </li>
+    </ul>
+{{if ge .Edad 18}}
+<p>Eres mayor de edad</p>
+{{else}}
+<p>Eres menor de edad</p>
+{{end}}
+<hr/>
+<h2>Impresión del conjunto de datos</h2>
+{{.Habilidades}}
+<p> Impresion iterada con un cliclo </p>
+<ul>
+    {{range .Habilidades}}
+    <li> {{.Nombre}} </li>
+    {{end}}
+</ul>
+</main>
+{{template "pie"}}
+
+<!--
+Condiciones de comparación
+
+== eq
+!= ne
+<  lt
+<= le
+>  gt
+>= ge
+-->
