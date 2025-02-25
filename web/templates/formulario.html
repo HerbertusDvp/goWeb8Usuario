@@ -1,0 +1,40 @@
+{{template "header"}}
+<main class="container">
+  <h1>Formulario cliente</h1>
+  <div class="row">
+    
+    <form action="/formulariop" method="POST">
+
+        <div class="row mb-3">
+          <label for="inputEmail3" class="col-sm-2 col-form-label">Nombre</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="nombre" id="">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="inputPassword3" class="col-sm-2 col-form-label">Télefono</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="telefono" id="">
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <label for="inputPassword3" class="col-sm-2 col-form-label">Correo</label>
+          <div class="col-sm-10">
+            <input type="email" class="form-control" name="correo" id="">
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-10">
+            <input type="password" class="form-control" name="password" id="">
+          </div>
+        </div>
+       
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+  </div>
+</main>
+{{template "pie"}}

@@ -19,6 +19,10 @@ func main() {
 	mux.HandleFunc("/parametrosQS", ruta.ParametrosQS)
 	mux.HandleFunc("/estructuras", ruta.Estructuras)
 
+	//Manejador para formularios
+	mux.HandleFunc("/formulario", ruta.Formulario)
+	mux.HandleFunc("/formulariop", ruta.Formulariop).Methods("POST")
+
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
 	mux.PathPrefix("/web/static/").Handler(s)
