@@ -27,10 +27,14 @@ func main() {
 	mux.HandleFunc("/formulario/file", ruta.FormularioFile)
 	mux.HandleFunc("/formulario/fileup", ruta.FormularioFileUp)
 
-	//Recursos
+	//Recursos PDF
 	mux.HandleFunc("/recursos", ruta.Recursos)
 	mux.HandleFunc("/recursos/pdf", ruta.RecursosPdf)
 	mux.HandleFunc("/recursos/generaPDF", ruta.RecursosGeneraPDF2)
+
+	// recursos Excel
+	mux.HandleFunc("/recursos/excel", ruta.RecursosExcel)
+	mux.HandleFunc("/recursos/generaExcel", ruta.RecursosGeneraExcel)
 
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))

@@ -24,6 +24,22 @@ func Recursos(response http.ResponseWriter, request *http.Request) {
 	template.Execute(response, data)
 }
 
+func RecursosExcel(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/recursosExcel.html", utils.Frontend))
+	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
+
+	data := map[string]string{
+		"css":     cssSesion,
+		"mensaje": cssMensaje,
+	}
+	template.Execute(response, data)
+}
+
+func RecursosGeneraExcel(response http.ResponseWriter, request *http.Request) {
+
+}
+
+// ----------------------PDF --------------------------
 func RecursosPdf(response http.ResponseWriter, request *http.Request) {
 	template := template.Must(template.ParseFiles("web/templates/recursoPDF.html", utils.Frontend))
 	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)

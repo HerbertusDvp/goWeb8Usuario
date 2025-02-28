@@ -1,0 +1,17 @@
+{{template "header"}}
+<main class="container">
+    {{if ne .css ""}}
+    <div class="alert alert-{{.css}} alert-dismissible fade show">
+    {{.mensaje}}
+    <button type="button" class="btn-close"  data-bs-dismiss="alert" aria-label="Close">
+
+    </button>
+    </div>
+  {{end}}
+  <h1>Crear Excel</h1>
+
+  <a href="/recursos/generaExcel" class="btn btn-danger"> <i class="fas fa-file-pdf"></i> Generar Excel</a>
+
+</main>
+
+{{template "pie"}}
