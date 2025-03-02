@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/sessions"
+	gomail "gopkg.in/gomail.v2"
 )
 
 var Frontend string = "web/layout/frontend.html"
@@ -43,4 +44,18 @@ func CrearMensaje(response http.ResponseWriter, request *http.Request, css strin
 	session.AddFlash(css, "css")
 	session.AddFlash(mensaje, "mensaje")
 	session.Save(request, response)
+}
+
+func EnviarCorreo() {
+	msg := gomail.NewMessage()
+	msg.SetHeader("From", "trabajosteschi@gmail.com")
+	msg.SetHeader("To", "HerbertusDvp@gmail.com")
+	msg.SetHeader("Subject", "Curso de golang")
+	msg.SetBody("text/html", "<h1>Curso de Golang</h1><b>Texto en negritas</b><p>Este es un parrafo</p>")
+	//msg.Attach()
+	n := gomail.NewDialer("smtp.gmail.com", 587, "trabajosteschi@gmail.com", "pzphnxowayjoekrw")
+
+	if err := n.DialAndSend(msg); err != nil {
+		panic(err)
+	}
 }

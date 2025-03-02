@@ -36,6 +36,12 @@ func main() {
 	mux.HandleFunc("/recursos/excel", ruta.RecursosExcel)
 	mux.HandleFunc("/recursos/generaExcel", ruta.RecursosGeneraExcel)
 
+	// Recursos Codigo QR
+	mux.HandleFunc("/recursos/qr", ruta.RecursosQR)
+
+	// Recursos Email
+	mux.HandleFunc("/recursos/email", ruta.RecursosEmail)
+
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
 	mux.PathPrefix("/web/static/").Handler(s)

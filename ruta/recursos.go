@@ -1,15 +1,21 @@
 package ruta
 
 import (
+	"encoding/base64"
 	"fmt"
+	"goweb1/modelos"
 	"goweb1/pkg/utils"
+	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"text/template"
 	"time"
 
 	"github.com/jung-kurt/gofpdf"
+	qrcode "github.com/skip2/go-qrcode"
+	excelize "github.com/xuri/excelize/v2"
 )
 
 func Recursos(response http.ResponseWriter, request *http.Request) {
@@ -24,13 +30,90 @@ func Recursos(response http.ResponseWriter, request *http.Request) {
 	template.Execute(response, data)
 }
 
-func RecursosExcel(response http.ResponseWriter, request *http.Request) {
-	template := template.Must(template.ParseFiles("web/templates/recursosExcel.html", utils.Frontend))
+func RecursosEmail(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/recursoEmail.html", utils.Frontend))
 	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
+
+	utils.EnviarCorreo()
 
 	data := map[string]string{
 		"css":     cssSesion,
 		"mensaje": cssMensaje,
+	}
+
+	template.Execute(response, data)
+}
+
+func RecursosQR(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/recursoQR.html", utils.Frontend))
+	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
+
+	// Generación de codigo QR
+	imagenQR, err := qrcode.Encode("https://estructuradedatos.com/", qrcode.High, 256)
+
+	if err != nil {
+		log.Fatal("Error al enerar codifo QR", err)
+	}
+	imagen := base64.StdEncoding.EncodeToString(imagenQR)
+
+	data := map[string]string{
+		"css":     cssSesion,
+		"mensaje": cssMensaje,
+		"imagen":  imagen,
+	}
+	template.Execute(response, data)
+
+}
+
+func RecursosExcel(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/recursosExcel.html", utils.Frontend))
+	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
+	// Excel
+	f := excelize.NewFile()
+	defer func() {
+		if err := f.Close(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	index, err := f.NewSheet("Sheet1")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	f.SetCellValue("Sheet1", "A1", "id")
+	f.SetCellValue("Sheet1", "B1", "Nombre")
+	f.SetCellValue("Sheet1", "C1", "Correo")
+	f.SetActiveSheet(index)
+
+	// Anexion de datos en el excel
+	cliente := modelos.Clientes{
+		modelos.Cliente{1, "Cesar Cancino", "info@gmail.com"},
+		modelos.Cliente{2, "Juan Perez", "jaun@gmail.com"},
+	}
+	contador := 2
+	i := 0
+
+	for _, service := range cliente {
+		fila := strconv.Itoa(contador)
+
+		f.SetCellValue("Sheet1", "A"+fila, service.Id)
+		f.SetCellValue("Sheet1", "B"+fila, service.Nombre)
+		f.SetCellValue("Sheet1", "C"+fila, service.Correo)
+		contador++
+		i++
+	}
+
+	//COnstruccion del documento
+	time := strings.Split(time.Now().String(), " ")
+	nombre := string(time[4][6:14]) + ".xlsx"
+	if err := f.SaveAs("web/static/excel/" + nombre); err != nil {
+		fmt.Println(err)
+	}
+
+	data := map[string]string{
+		"css":     cssSesion,
+		"mensaje": cssMensaje,
+		"nombre":  nombre,
 	}
 	template.Execute(response, data)
 }
