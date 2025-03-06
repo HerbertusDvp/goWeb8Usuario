@@ -7,3 +7,11 @@ type Cliente struct {
 }
 
 type Clientes []Cliente
+
+type Categoria struct {
+	Id     int
+	Nombre string
+	Slug   string
+}
+
+type Categorias []Categoria

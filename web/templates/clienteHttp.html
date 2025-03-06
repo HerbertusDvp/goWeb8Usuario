@@ -1,0 +1,26 @@
+{{template "header"}}
+<main class="container">
+  <h1>Cliente HTTP</h1>
+  <p class="d-flex justify-content-end">
+    <a href="/clienteHttp/crear" class="btn btn-success">
+      <i class="fas fa-check"></i>
+      Crear registro</a>
+  </p>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+      </thead>
+      <tbody>
+        {{range .datos}}
+        <td> {{.Id}} </td>
+        <td> {{.Nombre}} </td>
+        <td> Acciones </td>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+</main>
+{{template "pie"}}

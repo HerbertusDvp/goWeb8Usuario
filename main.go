@@ -42,6 +42,9 @@ func main() {
 	// Recursos Email
 	mux.HandleFunc("/recursos/email", ruta.RecursosEmail)
 
+	// cliente http
+	mux.HandleFunc("/clientehttp", ruta.ClienteHttp)
+
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
 	mux.PathPrefix("/web/static/").Handler(s)
