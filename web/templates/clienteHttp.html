@@ -12,14 +12,14 @@
         <th>Id</th>
         <th>Nombre</th>
         <th>Acciones</th>
+        <tbody>
       </thead>
-      <tbody>
         {{range .datos}}
         <td> {{.Id}} </td>
         <td> {{.Nombre}} </td>
-        <td> Acciones </td>
-        {{end}}
+        <td> {{.Slug}} </td>
       </tbody>
+      {{end}}
     </table>
   </div>
 </main>

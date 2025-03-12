@@ -101,13 +101,4 @@ func Estructuras(response http.ResponseWriter, request *http.Request) {
 func Pagina404(response http.ResponseWriter, request *http.Request) {
 	template := template.Must(template.ParseFiles("web/templates/404.html", utils.Frontend))
 	template.Execute(response, nil)
-
-	/*
-		template, err := template.ParseFiles("web/templates/home2.html", "web/layout/frontend.html")
-		if err != nil {
-			panic(err)
-		} else {
-			template.Execute(response, nil)
-		}
-	*/
 }
