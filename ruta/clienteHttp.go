@@ -82,3 +82,20 @@ func ClienteHttp(response http.ResponseWriter, request *http.Request) {
 		fmt.Println("renderizar plantilla: Ok")
 	}
 }
+
+func ClienteHttpCrear(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/clienteHttp", utils.Frontend))
+	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
+
+	data := map[string]string{
+		"css":     cssSesion,
+		"mensaje": cssMensaje,
+	}
+
+	template.Execute(response, data)
+
+}
+
+func ClienteHttpCrearPost(response http.ResponseWriter, request *http.Request) {
+
+}
