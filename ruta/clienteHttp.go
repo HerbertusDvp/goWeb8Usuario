@@ -59,7 +59,7 @@ func ClienteHttp(response http.ResponseWriter, request *http.Request) {
 	datos := modelos.Categorias{} // Slice de Categoria: Id, Nombre Slug
 	fmt.Println("Impresion de datos")
 	errJson := json.Unmarshal(body, &datos)
-	fmt.Println(datos)
+	//fmt.Println(datos)
 	if errJson != nil {
 		http.Error(response, "Error al decodificar la respuesta JSON", http.StatusInternalServerError)
 		return
