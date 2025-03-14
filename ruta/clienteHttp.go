@@ -1,6 +1,7 @@
 package ruta
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"goweb1/modelos"
@@ -107,4 +108,27 @@ func ClienteHttpCrearPost(response http.ResponseWriter, request *http.Request) {
 		http.Redirect(response, request, "/clientehttp/crear", http.StatusSeeOther)
 	}
 
+	datos := map[string]string{"nombre": request.FormValue("nombre")}
+
+	//Conversion a jason
+	jsonValue, _ := json.Marshal(datos)
+
+	// Crear la solicitud HTTP
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", "https://www.api.tamila.cl/api/categorias", bytes.NewBuffer(jsonValue))
+
+	if err != nil {
+		http.Error(response, "Error al crear la solicitud HTTP", http.StatusInternalServerError)
+		return
+	} else {
+		fmt.Println("Solicitud http: Ok")
+	}
+	//Agregar el token de autorizacion
+	req.Header.Set("Authorization", Token)
+
+	reg, _ := client.Do(req)
+	defer reg.Body.Close()
+
+	utils.CrearMensaje(response, request, "success", "Registro exitoso")
+	http.Redirect(response, request, "/clientehttp/crear", http.StatusSeeOther)
 }
