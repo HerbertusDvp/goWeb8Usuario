@@ -84,7 +84,7 @@ func ClienteHttp(response http.ResponseWriter, request *http.Request) {
 }
 
 func ClienteHttpCrear(response http.ResponseWriter, request *http.Request) {
-	template := template.Must(template.ParseFiles("web/templates/clienteHttp", utils.Frontend))
+	template := template.Must(template.ParseFiles("web/templates/clienteHttpCrear.html", utils.Frontend))
 	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
 
 	data := map[string]string{
@@ -97,5 +97,14 @@ func ClienteHttpCrear(response http.ResponseWriter, request *http.Request) {
 }
 
 func ClienteHttpCrearPost(response http.ResponseWriter, request *http.Request) {
+	mensaje := ""
+	if len(request.FormValue("nombre")) == 0 {
+		mensaje = mensaje + "El campo nombre está vacío"
+	}
+
+	if mensaje != "" {
+		utils.CrearMensaje(response, request, "danger", mensaje)
+		http.Redirect(response, request, "/clientehttp/crear", http.StatusSeeOther)
+	}
 
 }
