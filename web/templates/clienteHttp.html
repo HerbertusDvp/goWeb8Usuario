@@ -17,7 +17,11 @@
         {{range .datos}}
         <td> {{.Id}} </td>
         <td> {{.Nombre}} </td>
-        <td> {{.Slug}} </td>
+        <td> 
+          <a href="/clientehttp/editar/{{.Id}}"><i class="fas fa-edit"></i></a>
+          <a href="javascript:void(0);" onclick="confirmarSweet('Confirma eliminar','/clientehttp/eliminar/{{.Id}}');"><i class="fas fa-trash-alt"></i></a>
+
+        </td>
       </tbody>
       {{end}}
     </table>

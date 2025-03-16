@@ -47,6 +47,10 @@ func main() {
 	mux.HandleFunc("/clientehttp/crear", ruta.ClienteHttpCrear)
 	mux.HandleFunc("/clientehttp/crear-post", ruta.ClienteHttpCrearPost).Methods("POST")
 
+	mux.HandleFunc("/clientehttp/editar/{id:.*}", ruta.ClienteHttpEditar)
+	mux.HandleFunc("/clientehttp/editar-post/{id:.*}", ruta.ClienteHttpEditarPost)
+	mux.HandleFunc("/clientehttp/eliminar/{id:.*}", ruta.ClienteHttpEliminar)
+
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
 	mux.PathPrefix("/web/static/").Handler(s)

@@ -9,6 +9,8 @@ import (
 	"io"
 	"net/http"
 	"text/template"
+
+	"github.com/gorilla/mux"
 )
 
 var Token string = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MzYsImlhdCI6MTc0MTgxNDMxNiwiZXhwIjoxNzQ0NDA2MzE2fQ.TAFYPufRL2gJPL117USamfhYCOun2Syz3n4O74vQiPA"
@@ -131,4 +133,128 @@ func ClienteHttpCrearPost(response http.ResponseWriter, request *http.Request) {
 
 	utils.CrearMensaje(response, request, "success", "Registro exitoso")
 	http.Redirect(response, request, "/clientehttp/crear", http.StatusSeeOther)
+}
+
+func ClienteHttpEditar(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/clienteHttpEditar.html", utils.Frontend))
+
+	vars := mux.Vars(request)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "https://www.api.tamila.cl/api/categorias/"+vars["id"], nil)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	req.Header.Set("Authorization", Token)
+
+	reg, err := client.Do(req)
+	defer reg.Body.Close()
+	body, err := io.ReadAll(reg.Body)
+	datos := modelos.Categoria{}
+	errJson := json.Unmarshal(body, &datos)
+
+	if errJson != nil {
+
+	}
+
+	data := map[string]string{
+		"id":     vars["id"],
+		"nombre": datos.Nombre,
+		"slug":   datos.Slug,
+	}
+
+	template.Execute(response, data)
+
+}
+
+func ClienteHttpEditarPost(response http.ResponseWriter, request *http.Request) {
+	mensaje := ""
+
+	if len(request.FormValue("nombre")) == 0 {
+		mensaje = mensaje + "El campo nombre está vacío"
+	}
+
+	if mensaje != "" {
+		fmt.Println("Nombre correcto")
+	}
+
+	vars := mux.Vars(request)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "https://www.api.tamila.cl/api/categorias/"+vars["id"], nil)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	req.Header.Set("Authorization", Token)
+
+	reg, err := client.Do(req)
+	defer reg.Body.Close()
+	body, err := io.ReadAll(reg.Body)
+
+	datos := modelos.Categoria{}
+	errJson := json.Unmarshal(body, &datos)
+
+	if errJson != nil {
+
+	}
+
+	datosJson := map[string]string{
+		"nombre": request.FormValue("nombre"),
+	}
+	//Edicion del registro
+	jsonValue, _ := json.Marshal(datosJson)
+	req2, err2 := http.NewRequest("PUT", "https://www.api.tamila.cl/api/categorias/"+vars["id"], bytes.NewBuffer(jsonValue))
+	req2.Header.Set("Authorization", Token)
+	if err2 != nil {
+		fmt.Println(err2)
+	}
+
+	reg2, err3 := client.Do(req2)
+	defer reg.Body.Close()
+
+	if err3 != nil {
+
+	}
+
+	defer reg2.Body.Close()
+	http.Redirect(response, request, "/clientehttp/editar/"+vars["id"], http.StatusSeeOther)
+}
+
+func ClienteHttpEliminar(response http.ResponseWriter, request *http.Request) {
+	vars := mux.Vars(request)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "https://www.api.tamila.cl/api/categorias/"+vars["id"], nil)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	req.Header.Set("Authorization", Token)
+
+	reg, err := client.Do(req)
+	defer reg.Body.Close()
+
+	body, err := io.ReadAll(reg.Body)
+
+	datos := modelos.Categoria{}
+	errJson := json.Unmarshal(body, &datos)
+	if errJson != nil {
+		fmt.Println("Despues del modelos.categoria: ", errJson)
+	}
+
+	req2, err2 := http.NewRequest("DELETE", "https://www.api.tamila.cl/api/categorias/"+vars["id"], nil)
+	req2.Header.Set("Authorization", Token)
+	if err2 != nil {
+		fmt.Println("Error 2: ", err2)
+	}
+
+	reg2, err3 := client.Do(req2)
+	defer reg.Body.Close()
+
+	if err != nil {
+		fmt.Println("Error 3: ", err3)
+	}
+	defer reg2.Body.Close()
+	http.Redirect(response, request, "/clientehttp", http.StatusSeeOther)
 }
