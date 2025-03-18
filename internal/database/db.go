@@ -1,4 +1,4 @@
-package conect
+package database
 
 import (
 	"database/sql"
@@ -11,7 +11,7 @@ import (
 var Conexion *sql.DB
 
 func Conecta() {
-	errorVariables := godotenv.Load()
+	errorVariables := godotenv.Load("internal/config/.env")
 
 	if errorVariables != nil {
 		panic(errorVariables)

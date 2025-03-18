@@ -1,9 +1,10 @@
 package modelos
 
 type Cliente struct {
-	Id     int
-	Nombre string
-	Correo string
+	Id       int
+	Nombre   string
+	Correo   string
+	Telefono string
 }
 
 type Clientes []Cliente
@@ -15,3 +16,9 @@ type Categoria struct {
 }
 
 type Categorias []Categoria
+
+type ClienteHttp struct {
+	Css     string
+	Mensaje string
+	Datos   Clientes
+}

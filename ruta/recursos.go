@@ -87,8 +87,8 @@ func RecursosExcel(response http.ResponseWriter, request *http.Request) {
 
 	// Anexion de datos en el excel
 	cliente := modelos.Clientes{
-		modelos.Cliente{1, "Cesar Cancino", "info@gmail.com"},
-		modelos.Cliente{2, "Juan Perez", "jaun@gmail.com"},
+		modelos.Cliente{1, "Cesar Cancino", "info@gmail.com", "Mi tel"},
+		modelos.Cliente{2, "Juan Perez", "jaun@gmail.com", "Mi tel 2"},
 	}
 	contador := 2
 	i := 0

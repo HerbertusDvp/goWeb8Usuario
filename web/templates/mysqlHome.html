@@ -2,7 +2,48 @@
 <main class="container">
   <h1>Mysql Home</h1>
 
-  
+  {{if ne .Css ""}}
+    <div class="alert alert-{{.Css}} alert-dismissible fade show" role="alert">
+      {{.Mensaje}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">        
+      </button>
+    </div>
+  {{end}}  
 
+  <p class="d-flex justify-content-end">
+    <a href="/mysql/crear" class="btn btn-success">
+      <i class="fas fa-check"></i>Crear
+    </a>
+  </p>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Telefono</th>
+          <th>Acciones</th>
+        </tr>
+        <tbody>
+          {{range .Datos}}
+          <tr>
+            <td> {{.Id}} </td>
+            <td> {{.Nombre}} </td>
+            <td> {{.Correo}} </td>
+            <td> {{.Telefono}} </td>
+            <td style="text-align: center;"> 
+              <a href="/mysql/editar/{{.Id}}"> <i class="fas fa-edit"></i> </a>
+              <a href="javascript:void(0);" onclick="confirmarSweet('Confirmar borrar','/mysql/eliminar/{{.Id}}')">
+                <i class="fas fa-trash-alt"></i>
+              </a>
+            </td>
+          </tr>
+          {{end}}
+        </tbody>
+      </thead>
+    </table>
+  </div>
 </main>
 {{template "pie"}}

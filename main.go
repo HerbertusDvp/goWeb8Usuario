@@ -53,6 +53,8 @@ func main() {
 
 	// Mysql
 	mux.HandleFunc("/mysql", ruta.MysqlListar)
+	mux.HandleFunc("/mysql/crear", ruta.MysqlCrear)
+	mux.HandleFunc("/mysql/crearPost", ruta.MysqlCrearRecept)
 
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
