@@ -9,6 +9,16 @@ type Cliente struct {
 
 type Clientes []Cliente
 
+type Usuario struct {
+	Id       int
+	Nombre   string
+	Correo   string
+	Telefono string
+	Password string
+}
+
+type Usuarios []Usuario
+
 type Categoria struct {
 	Id     int
 	Nombre string

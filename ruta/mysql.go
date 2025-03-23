@@ -80,7 +80,7 @@ func MysqlCrearRecept(response http.ResponseWriter, request *http.Request) {
 
 	if mensaje != "" {
 		utils.CrearMensaje(response, request, "danger", mensaje)
-		http.Redirect(response, request, "/mysql/crear", http.StatusSeeOther)
+		http.Redirect(response, request, "/mysql", http.StatusSeeOther)
 		return
 	}
 
@@ -133,9 +133,54 @@ func MysqlEditar(response http.ResponseWriter, request *http.Request) {
 }
 
 func MysqlEditarRecept(response http.ResponseWriter, request *http.Request) {
+	mensaje := ""
 
+	vars := mux.Vars(request)
+
+	if len(request.FormValue("nombre")) == 0 {
+		mensaje = mensaje + "El Nombre está vacío "
+	}
+
+	if len(request.FormValue("correo")) == 0 {
+		mensaje = mensaje + "El Correo está vacío "
+	}
+	if utils.RegexCorreo.FindStringSubmatch(request.FormValue("correo")) == nil {
+		mensaje = mensaje + ". El correo no es válido"
+	}
+	if len(request.FormValue("telefono")) == 0 {
+		mensaje = mensaje + ". El teléfono está vacío"
+	}
+
+	if mensaje != "" {
+		utils.CrearMensaje(response, request, "danger", mensaje)
+		http.Redirect(response, request, "/mysql/editar/"+vars["id"], http.StatusSeeOther)
+	}
+	database.Conecta()
+
+	query := "update cliente set nombre = ?, correo = ?, telefono = ? where id = ?; "
+
+	_, err := database.Conexion.Exec(query, request.FormValue("nombre"), request.FormValue("correo"), request.FormValue("telefono"), vars["id"])
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	utils.CrearMensaje(response, request, "success", "Se modificó el cliente")
+	http.Redirect(response, request, "/mysql", http.StatusSeeOther)
 }
 
 func MysqlEliminar(response http.ResponseWriter, request *http.Request) {
+	vars := mux.Vars(request)
 
+	database.Conecta()
+
+	query := "delete from cliente where id = ?"
+
+	_, err := database.Conexion.Exec(query, vars["id"])
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	utils.CrearMensaje(response, request, "success", "Se eliminó el cliente")
+	http.Redirect(response, request, "/mysql", http.StatusSeeOther)
 }

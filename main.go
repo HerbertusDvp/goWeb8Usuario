@@ -53,13 +53,13 @@ func main() {
 
 	// Mysql
 	mux.HandleFunc("/mysql", ruta.MysqlListar)
-	mux.HandleFunc("/mysql/crear", ruta.MysqlCrear).Methods("POST")
-	mux.HandleFunc("/mysql/crearPost", ruta.MysqlCrearRecept)
+	mux.HandleFunc("/mysql/crear", ruta.MysqlCrear)
+	mux.HandleFunc("/mysql/crearPost", ruta.MysqlCrearRecept).Methods("POST")
 
 	mux.HandleFunc("/mysql/editar/{id:.*}", ruta.MysqlEditar)
 	mux.HandleFunc("/mysql/editarPost/{id:.*}", ruta.MysqlEditarRecept).Methods("POST")
 
-	mux.HandleFunc("/mysql/eliminar/{id:.*}", ruta.MysqlEditar)
+	mux.HandleFunc("/mysql/eliminar/{id:.*}", ruta.MysqlEliminar)
 
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
