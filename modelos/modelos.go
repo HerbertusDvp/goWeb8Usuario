@@ -22,3 +22,9 @@ type ClienteHttp struct {
 	Mensaje string
 	Datos   Clientes
 }
+
+type ClienteHttp2 struct {
+	Css     string
+	Mensaje string
+	Datos   Cliente
+}

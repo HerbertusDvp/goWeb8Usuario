@@ -1,0 +1,35 @@
+{{template "header"}}
+<main class="container">
+  <h1>Mysql Editar de las BD</h1>
+
+  <div class="row">
+    
+    <form action="/mysql/editarPost/{{.Datos.Id}}" method="POST">
+
+        <div class="row mb-3">
+          <label for="inputEmail3" class="col-sm-2 col-form-label">Nombre</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="nombre" value="{{.Datos.Nombre}}">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label for="inputPassword3" class="col-sm-2 col-form-label">Correo</label>
+          <div class="col-sm-10">
+            <input type="email" class="form-control" name="correo" value="{{.Datos.Correo}}">
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <label for="inputPassword3" class="col-sm-2 col-form-label">Telefono</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="telefono" value="{{.Datos.Telefono}}">
+          </div>
+        </div>
+       
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+  </div>
+  
+</main>
+{{template "pie"}}

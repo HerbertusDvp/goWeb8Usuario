@@ -5,8 +5,11 @@ import (
 	"goweb1/internal/database"
 	"goweb1/modelos"
 	"goweb1/pkg/utils"
+	"log"
 	"net/http"
 	"text/template"
+
+	"github.com/gorilla/mux"
 )
 
 func MysqlListar(response http.ResponseWriter, request *http.Request) {
@@ -26,7 +29,7 @@ func MysqlListar(response http.ResponseWriter, request *http.Request) {
 		clientes = append(clientes, dato)
 	}
 
-	fmt.Println(clientes)
+	//fmt.Println(clientes)
 
 	if err != nil {
 		fmt.Println("Error al ejecutar la consulta: ", err)
@@ -91,4 +94,48 @@ func MysqlCrearRecept(response http.ResponseWriter, request *http.Request) {
 
 	utils.CrearMensaje(response, request, "success", "Se creó el registro")
 	http.Redirect(response, request, "/mysql", http.StatusSeeOther)
+}
+
+func MysqlEditar(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/mysqlEditar.html", utils.Frontend))
+
+	database.Conecta()
+
+	query := "Select*from cliente where id = ?"
+
+	vars := mux.Vars(request)
+	datos, err := database.Conexion.Query(query, vars["id"])
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer database.CerrarConexion()
+
+	var dato modelos.Cliente
+	for datos.Next() {
+		err := datos.Scan(&dato.Id, &dato.Nombre, &dato.Correo, &dato.Telefono)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
+
+	data := modelos.ClienteHttp2{
+		Css:     cssSesion,
+		Mensaje: cssMensaje,
+		Datos:   dato,
+	}
+	template.Execute(response, data)
+
+}
+
+func MysqlEditarRecept(response http.ResponseWriter, request *http.Request) {
+
+}
+
+func MysqlEliminar(response http.ResponseWriter, request *http.Request) {
+
 }
