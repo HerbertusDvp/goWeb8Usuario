@@ -61,6 +61,10 @@ func main() {
 
 	mux.HandleFunc("/mysql/eliminar/{id:.*}", ruta.MysqlEliminar)
 
+	mux.HandleFunc("/usuario", ruta.UsuarioListar)
+	mux.HandleFunc("/usuario/registro", ruta.FormUsuario)
+	mux.HandleFunc("/usuario/registroPost", ruta.UsuarioReceipt).Methods("POST")
+
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
 	mux.PathPrefix("/web/static/").Handler(s)

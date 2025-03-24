@@ -38,3 +38,9 @@ type ClienteHttp2 struct {
 	Mensaje string
 	Datos   Cliente
 }
+
+type HttpUsuario struct {
+	Css     string
+	Mensaje string
+	Datos   Usuarios
+}

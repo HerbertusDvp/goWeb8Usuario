@@ -1,0 +1,51 @@
+{{template "header"}}
+<main class="container">
+  <h1>Lista de usuarios</h1>
+
+  {{if ne .Css ""}}
+    <div class="alert alert-{{.Css}} alert-dismissible fade show" role="alert">
+      {{.Mensaje}}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">        
+      </button>
+    </div>
+  {{end}}  
+
+  <p class="d-flex justify-content-end">
+    <a href="/usuario/registro" class="btn btn-success">
+      Nuevo usuario
+    </a>
+  </p>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Telefono</th>
+          <th>Password</th>
+          <th>Acciones</th>
+        </tr>
+        <tbody>
+          {{range .Datos}}
+          <tr>
+            <td> {{.Id}} </td>
+            <td> {{.Nombre}} </td>
+            <td> {{.Correo}} </td>
+            <td> {{.Telefono}} </td>
+            <td> {{.Password}} </td>
+            <td style="text-align: center;"> 
+              <a href="/mysql/editar/{{.Id}}"> <i class="fas fa-edit"></i> </a>
+              <a href="javascript:void(0);" onclick="confirmarSweet('Confirmar borrar','/mysql/eliminar/{{.Id}}')">
+                <i class="fas fa-trash-alt"></i>
+              </a>
+            </td>
+          </tr>
+          {{end}}
+        </tbody>
+      </thead>
+    </table>
+  </div>
+</main>
+{{template "pie"}}
