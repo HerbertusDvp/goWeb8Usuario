@@ -1,5 +1,15 @@
 {{template "header"}}
 <main class="container">
+
+  {{if ne .css ""}}
+  <div class="alert alert-{{.css}} alert-dismissible fade show" role="alert">
+    {{.mensaje}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">        
+    </button>
+  </div>
+{{end}}  
+
+
   <h1>Mysql crear</h1>
 
   <div class="row">

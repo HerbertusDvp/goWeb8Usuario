@@ -80,7 +80,7 @@ func MysqlCrearRecept(response http.ResponseWriter, request *http.Request) {
 
 	if mensaje != "" {
 		utils.CrearMensaje(response, request, "danger", mensaje)
-		http.Redirect(response, request, "/mysql", http.StatusSeeOther)
+		http.Redirect(response, request, "/mysql/crear", http.StatusSeeOther)
 		return
 	}
 

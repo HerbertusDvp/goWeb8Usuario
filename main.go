@@ -1,6 +1,7 @@
 package main
 
 import (
+	"goweb1/internal/middleware"
 	"goweb1/ruta"
 	"log"
 	"net/http"
@@ -64,6 +65,12 @@ func main() {
 	mux.HandleFunc("/usuario", ruta.UsuarioListar)
 	mux.HandleFunc("/usuario/registro", ruta.FormUsuario)
 	mux.HandleFunc("/usuario/registroPost", ruta.UsuarioReceipt).Methods("POST")
+
+	//Login
+	mux.HandleFunc("/login", ruta.Login)
+	mux.HandleFunc("/loginPost", ruta.LoginReceiver)
+
+	mux.HandleFunc("/usuario/index", middleware.Proteger(ruta.SeguridadSesion)) // funcion solo con autenticación
 
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))

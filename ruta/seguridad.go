@@ -112,3 +112,109 @@ func UsuarioReceipt(response http.ResponseWriter, request *http.Request) {
 	http.Redirect(response, request, "/usuario", http.StatusSeeOther)
 
 }
+
+func Login(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/UserLogin.html", utils.Frontend))
+
+	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
+
+	data := map[string]string{
+		"css":     cssSesion,
+		"mensaje": cssMensaje,
+	}
+
+	template.Execute(response, data)
+
+}
+
+func LoginReceiver(response http.ResponseWriter, request *http.Request) {
+
+	mensaje := ""
+
+	if len(request.FormValue("nombre")) == 0 {
+		mensaje = mensaje + "El nombreo está vacío. "
+	}
+
+	if len(request.FormValue("password")) == 0 {
+		mensaje = mensaje + "La contraseña está vacía. "
+	}
+
+	if mensaje != "" {
+		fmt.Println("Campo vacio")
+		mensaje = "Usario no existe"
+
+		utils.CrearMensaje(response, request, "danger", mensaje)
+		http.Redirect(response, request, "/login", http.StatusSeeOther)
+
+		return
+
+	}
+	// Hash de la contraseña
+
+	database.Conecta()
+	query := "select * from usuario where nombre = ?"
+	datos, err := database.Conexion.Query(query, request.FormValue("nombre"))
+
+	if err != nil {
+		fmt.Println("Alguna clase de error: ", datos)
+	}
+	defer database.CerrarConexion()
+
+	var dato modelos.Usuario
+	for datos.Next() {
+		errNext := datos.Scan(&dato.Id, &dato.Nombre, &dato.Correo, &dato.Telefono, &dato.Password)
+
+		if errNext != nil {
+			fmt.Println("Alguna clase de error")
+			utils.CrearMensaje(response, request, "danger", "Error al iniciar sesión")
+			http.Redirect(response, request, "/login", http.StatusSeeOther)
+			return
+		}
+		// Comprar hashes
+
+		password := []byte(request.FormValue("password"))
+		passwordBD := []byte(dato.Password)
+
+		errPass := bcrypt.CompareHashAndPassword(passwordBD, password)
+
+		if errPass == nil {
+			session, _ := utils.Store.Get(request, "session-name")
+			session.Values["sesionId"] = dato.Id // Puede ser cadena
+			session.Values["sesionNombre"] = dato.Nombre
+
+			errSession := session.Save(request, response)
+
+			if errSession != nil {
+				http.Error(response, errSession.Error(), http.StatusInternalServerError)
+				return
+			}
+			http.Redirect(response, request, "/usuario/index", http.StatusSeeOther)
+
+			//fmt.Println("Acceso de: ", dato.Nombre)
+			//utils.CrearMensaje(response, request, "success", "Acceso concedido")
+			//http.Redirect(response, request, "/usuario/index", http.StatusSeeOther)
+			return
+		}
+	}
+	fmt.Println("Acceso denegado")
+	utils.CrearMensaje(response, request, "danger", "Acceso denegado")
+	http.Redirect(response, request, "/login", http.StatusSeeOther)
+
+}
+
+func UsuarioIndex(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/UserIndex.html", utils.Frontend))
+	template.Execute(response, nil)
+}
+
+func SeguridadSesion(response http.ResponseWriter, request *http.Request) {
+	template := template.Must(template.ParseFiles("web/templates/UserIndex.html", utils.Frontend))
+	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
+
+	data := map[string]string{
+		"css":     cssSesion,
+		"mensaje": cssMensaje,
+	}
+
+	template.Execute(response, data)
+}

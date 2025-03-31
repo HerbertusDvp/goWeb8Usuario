@@ -8,6 +8,7 @@ import (
 )
 
 var Frontend string = "web/layout/frontend.html"
+
 var Store = sessions.NewCookieStore([]byte("session-name"))
 
 func RetornaMensaje(response http.ResponseWriter, request *http.Request) (string, string) {
