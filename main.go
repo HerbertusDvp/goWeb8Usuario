@@ -71,6 +71,7 @@ func main() {
 	mux.HandleFunc("/loginPost", ruta.LoginReceiver)
 
 	mux.HandleFunc("/usuario/index", middleware.Proteger(ruta.SeguridadSesion)) // funcion solo con autenticación
+	mux.HandleFunc("/logOut", ruta.LogOut)
 
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))

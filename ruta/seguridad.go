@@ -122,9 +122,7 @@ func Login(response http.ResponseWriter, request *http.Request) {
 		"css":     cssSesion,
 		"mensaje": cssMensaje,
 	}
-
 	template.Execute(response, data)
-
 }
 
 func LoginReceiver(response http.ResponseWriter, request *http.Request) {
@@ -210,11 +208,17 @@ func UsuarioIndex(response http.ResponseWriter, request *http.Request) {
 func SeguridadSesion(response http.ResponseWriter, request *http.Request) {
 	template := template.Must(template.ParseFiles("web/templates/UserIndex.html", utils.Frontend))
 	cssSesion, cssMensaje := utils.RetornaMensaje(response, request)
-
+	sesionId, sesionNombre := utils.RetornaLogin(request)
 	data := map[string]string{
-		"css":     cssSesion,
-		"mensaje": cssMensaje,
+		"css":          cssSesion,
+		"mensaje":      cssMensaje,
+		"sesionId":     sesionId,
+		"sesionNombre": sesionNombre,
 	}
 
 	template.Execute(response, data)
+}
+
+func LogOut(response http.ResponseWriter, request *http.Request) {
+
 }

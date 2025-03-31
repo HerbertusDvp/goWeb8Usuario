@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/sessions"
@@ -10,6 +11,25 @@ import (
 var Frontend string = "web/layout/frontend.html"
 
 var Store = sessions.NewCookieStore([]byte("session-name"))
+
+func RetornaLogin(request *http.Request) (string, string) {
+	session, _ := Store.Get(request, "session-name")
+
+	sesionId := ""
+	sesionNombre := ""
+
+	if session.Values["sesionId"] != nil {
+		sesionId, _ = session.Values["sesionId"].(string)
+		fmt.Println("SesionId:", sesionId)
+	}
+
+	if session.Values["sesionNombre"] != nil {
+		sesionNombre, _ = session.Values["sesionNombre"].(string)
+		fmt.Println("SesionNombre: ", sesionNombre)
+	}
+
+	return sesionId, sesionNombre
+}
 
 func RetornaMensaje(response http.ResponseWriter, request *http.Request) (string, string) {
 	session, _ := Store.Get(request, "flash-session")
