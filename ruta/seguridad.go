@@ -220,5 +220,17 @@ func SeguridadSesion(response http.ResponseWriter, request *http.Request) {
 }
 
 func LogOut(response http.ResponseWriter, request *http.Request) {
+	session, _ := utils.Store.Get(request, "session-name")
+	session.Values["sesionId"] = nil
+	session.Values["sesionNombre"] = nil
 
+	err := session.Save(request, response)
+
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	utils.CrearMensaje(response, request, "primary", "Sesion cerrada")
+	http.Redirect(response, request, "/", http.StatusSeeOther)
 }
