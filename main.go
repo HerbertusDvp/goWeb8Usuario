@@ -73,6 +73,11 @@ func main() {
 	mux.HandleFunc("/usuario/index", middleware.Proteger(ruta.SeguridadSesion)) // funcion solo con autenticación
 	mux.HandleFunc("/logout", ruta.LogOut)
 
+	//Rutas para realizar pagos
+	mux.HandleFunc("/pasarela/homepay", ruta.PasarelaHomePay)
+	mux.HandleFunc("/pasarela/webpay", ruta.PasarelaWebPay)
+	mux.HandleFunc("/pasarela/paypal", ruta.PasarelaPayPal)
+
 	//Para recursos estaicos
 	s := http.StripPrefix("/web/static/", http.FileServer(http.Dir("./web/static/")))
 	mux.PathPrefix("/web/static/").Handler(s)
