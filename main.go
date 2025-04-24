@@ -76,6 +76,8 @@ func main() {
 	//Rutas para realizar pagos
 	mux.HandleFunc("/pasarela/homepay", ruta.PasarelaHomePay)
 	mux.HandleFunc("/pasarela/webpay", ruta.PasarelaWebPay)
+	mux.HandleFunc("/pasarela/webpay/respuesta", ruta.WebPayRespuesta)
+
 	mux.HandleFunc("/pasarela/paypal", ruta.PasarelaPayPal)
 
 	//Para recursos estaicos

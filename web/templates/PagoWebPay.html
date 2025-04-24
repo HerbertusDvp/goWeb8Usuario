@@ -2,5 +2,21 @@
 <main class="container">
   <h1>Web Pay</h1>
 
+  <ul>
+    <li> <strong>Producto: </strong> Pc Gamer </li>
+    <li> <strong>Valor: </strong>$24500 </li>
+    <li> <strong>Cantidad: </strong>1</li>
+    <li> <strong> Orden de compra: </strong> 34224</li>
+    <li> <strong> URL: </strong> {{.url}} </li>
+    <li> <strong> TOKEN: </strong> {{.token}} </li>
+  </ul>
+
+  <form action="{{.url}}" method="post" name="form">
+    <input type="hidden" name="token_ws" id="token_ws" value="{{.token}}" />
+    <a href="javascript:void(0);" onclick="document.form.submit()" class="btn btn-danger">
+      <i class="fas fa-dollar-sign" >Pagar</i>
+    </a>
+  </form>
+
 </main>
 {{template "pie"}}

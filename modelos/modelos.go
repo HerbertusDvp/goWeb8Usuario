@@ -44,3 +44,23 @@ type HttpUsuario struct {
 	Mensaje string
 	Datos   Usuarios
 }
+
+type WebPayModel struct {
+	Url   string
+	Token string
+}
+
+type WebpayRespuestaModel struct {
+	Vci                 string
+	Amount              int
+	Status              string
+	Buy_order           string
+	Session_id          string
+	Card_detail         map[string]string
+	Accounting_date     string
+	Transaction_date    string
+	Authorization_code  string
+	Payment_type_code   string
+	Response_code       string
+	Installments_number string
+}
